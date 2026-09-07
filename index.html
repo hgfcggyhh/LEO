@@ -11,7 +11,7 @@
 @keyframes hintBlink{0%,100%{opacity:1;}50%{opacity:0.3;}}
 .fetch-hint-loading{color:var(--accent-blue) !important;animation:hintBlink 0.8s ease-in-out infinite;text-shadow:0 0 8px rgba(74,158,255,0.3);}
 .fetch-hint-done{color:var(--accent-green) !important;text-shadow:0 0 8px rgba(61,220,132,0.3);}
-@keyframes pulsePay{0%,100%{box-shadow:0 2px 12px rgba(255,159,10,0.4);}50%{box-shadow:0 2px 20px rgba(255,159,10,0.7);}}html{background:#0a0a12;overscroll-behavior:none;}body{overscroll-behavior:none;}</style></style></style><base target="_blank"><style>
+@keyframes pulsePay{0%,100%{box-shadow:0 2px 12px rgba(255,159,10,0.4);}50%{box-shadow:0 2px 20px rgba(255,159,10,0.7);}}html{background:#0a0a12;}</style></style></style><base target="_blank"><style>
 .screen-shield{display:none !important;}input,textarea{-webkit-user-select:auto !important;user-select:auto !important;}.capture-mask{display:none !important;}.capture-mask .icon{font-size:48px;}.capture-mask .sub{font-size:9px;color:#8b92a8;font-weight:500;max-width:280px;line-height:1.6;}.devtool-detect{display:none !important;}#vip-status-bar{transition:all 0.4s ease;}#vip-status-bar.vip-expired{background:linear-gradient(135deg,rgba(255,95,87,0.08),rgba(255,159,10,0.04)) !important;border-bottom-color:rgba(255,95,87,0.2) !important;}#vip-status-bar.vip-expired #vip-status-days{color:var(--accent-red) !important;}#vip-status-bar.vip-expired #vip-status-type{color:var(--accent-red) !important;}#vip-status-bar.vip-warning{background:linear-gradient(135deg,rgba(255,159,10,0.08),rgba(255,95,87,0.04)) !important;border-bottom-color:rgba(255,159,10,0.2) !important;animation:vipPulse 2s infinite;}#vip-status-bar.vip-warning #vip-status-days{color:var(--accent-orange) !important;}@keyframes vipPulse{0%,100%{opacity:1;}50%{opacity:0.7;}}
 </style><style>
 .refresh-float{position:fixed;bottom:100px;right:16px;z-index:400;background:rgba(22,25,34,0.7);border:1px solid rgba(37,42,56,0.7);border-radius:var(--radius-lg);padding:10px 16px;box-shadow:0 8px 32px rgba(0,0,0,0.4);display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-secondary);background:rgba(22,25,34,0.97);transition:opacity 0.3s cubic-bezier(0.4,0,0.2,1),transform 0.3s cubic-bezier(0.4,0,0.2,1),box-shadow 0.3s ease;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;}.refresh-float:active{cursor:grabbing;transform:scale(1.02);}.refresh-float:hover{border-color:var(--accent-blue);box-shadow:0 12px 40px rgba(74,158,255,0.15);}.refresh-float.hidden{opacity:0;pointer-events:none;transform:translateY(20px) scale(0.95);}.refresh-float .refresh-icon{font-size:14px;animation:refreshSpin 3s linear infinite;pointer-events:none;}@keyframes refreshSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}.refresh-float .refresh-label{font-weight:700;color:var(--text-primary);white-space:nowrap;pointer-events:none;}.refresh-float .refresh-timer{font-family:'SF Mono',monospace;font-weight:800;color:var(--accent-blue);font-variant-numeric:tabular-nums;min-width:44px;text-align:center;font-size:9px;pointer-events:none;}.refresh-float .refresh-close{background:rgba(28,31,42,0.7);border:1px solid rgba(37,42,56,0.7);color:var(--text-tertiary);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:10px;margin-left:4px;padding:0;line-height:1;transition:all 0.2s;flex-shrink:0;}.refresh-float .refresh-close:hover{background:var(--accent-red);color:#fff;border-color:var(--accent-red);transform:scale(1.1);}.refresh-float .refresh-close:active{transform:scale(0.9);}
@@ -397,11 +397,11 @@ modal.innerHTML = `
 <div style="font-size:18px;font-weight:800;color:#ff6600;margin-bottom:8px;">授权即将到期</div>
 <div style="font-size:14px;color:#8b92a8;margin-bottom:20px;">您的${planName}还有 <span style="color:#ff0055;font-weight:900;font-size:20px;">${days}</span> 天到期<br>续费可享无缝衔接，数据不丢失</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
-<div style="background:#181825;border:1px solid #2a2a40;border-radius:10px;padding:12px 8px;cursor:pointer;" onclick="openRewardModal('wechat')">
+<div style="background:#181825;border:1px solid #2a2a40;border-radius:10px;padding:12px 8px;cursor:pointer;" onclick="RenewalManager.selectRenewal('month')">
 <div style="font-size:12px;font-weight:700;">月卡</div>
 <div style="font-size:18px;font-weight:900;color:#00ccff;">¥128</div>
 </div>
-<div style="background:#181825;border:1px solid #2a2a40;border-radius:10px;padding:12px 8px;cursor:pointer;" onclick="openRewardModal('wechat')">
+<div style="background:#181825;border:1px solid #2a2a40;border-radius:10px;padding:12px 8px;cursor:pointer;" onclick="RenewalManager.selectRenewal('quarter')">
 <div style="font-size:12px;font-weight:700;">季卡</div>
 <div style="font-size:18px;font-weight:900;color:#ff6600;">¥328</div>
 </div>
@@ -899,8 +899,8 @@ try { initDataPin(); } catch(e) {}
     }
 })();
 });
-</script><div id="auth-wall" style="position:fixed;inset:0;background:#0a0a12;z-index:99999;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px;overflow-y:auto;-webkit-overflow-scrolling:touch;"><div style="background:#11111a;border:1px solid #2a2a40;border-radius:14px;padding:14px 12px;width:100%;max-width:400px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.6);"><div id="auth-unauthorized"><div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px;"><span style="font-size:32px;">🔐</span><button onclick="openRewardModal('wechat')" style="background:linear-gradient(135deg,#ff6600,#ff0055);border:none;border-radius:20px;padding:8px 20px;color:#fff;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 2px 12px rgba(255,159,10,0.4);transition:all 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">💎 点击这里支付解锁</button></div><div style="font-size:16px;font-weight:800;color:#e8eaf0;margin-bottom:2px;">情绪周期AI · 专业版</div><div style="font-size:11px;color:#8b92a8;margin-bottom:10px;">数据驱动交易决策 · 情绪周期可视化复盘工具</div>
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;"><div class="plan-option" data-plan="week" onclick="selectPlanUI('week');openRewardModal('wechat');" style="background:#181825;border:1.5px solid #2a2a40;border-radius:8px;padding:8px 4px;cursor:pointer;transition:all 0.3s;position:relative;"><div style="font-size:10px;font-weight:700;">周卡</div><div style="font-size:11px;color:#5a6078;text-decoration:line-through;margin-top:2px;">¥59.9</div><div style="font-size:16px;font-weight:900;color:#00ff88;">¥39.9</div><div style="font-size:9px;color:#5a6078;">7天</div><div style="position:absolute;top:4px;right:4px;background:linear-gradient(135deg,#ff0055,#cc0044);color:#fff;font-size:8px;font-weight:800;padding:1px 5px;border-radius:4px;">6.7折</div></div><div class="plan-option selected" data-plan="month" onclick="selectPlanUI('month');openRewardModal('wechat');" style="background:#181825;border:1.5px solid #00ccff;border-radius:8px;padding:8px 4px;cursor:pointer;transition:all 0.3s;box-shadow:0 0 12px rgba(74,158,255,0.15);position:relative;"><div style="font-size:10px;font-weight:700;">月卡<span style="background:#ff0055;color:#fff;font-size:7px;padding:0 3px;border-radius:3px;margin-left:2px;">热</span></div><div style="font-size:11px;color:#5a6078;text-decoration:line-through;margin-top:2px;">¥198</div><div style="font-size:16px;font-weight:900;color:#00ccff;">¥128</div><div style="font-size:9px;color:#5a6078;">30天</div><div style="position:absolute;top:4px;right:4px;background:linear-gradient(135deg,#ff0055,#cc0044);color:#fff;font-size:8px;font-weight:800;padding:1px 5px;border-radius:4px;">6.5折</div></div><div class="plan-option" data-plan="quarter" onclick="selectPlanUI('quarter');openRewardModal('wechat');" style="background:#181825;border:1.5px solid #2a2a40;border-radius:8px;padding:8px 4px;cursor:pointer;transition:all 0.3s;position:relative;"><div style="font-size:10px;font-weight:700;">季卡</div><div style="font-size:11px;color:#5a6078;text-decoration:line-through;margin-top:2px;">¥498</div><div style="font-size:16px;font-weight:900;color:#ff6600;">¥328</div><div style="font-size:9px;color:#5a6078;">90天</div><div style="position:absolute;top:4px;right:4px;background:linear-gradient(135deg,#ff0055,#cc0044);color:#fff;font-size:8px;font-weight:800;padding:1px 5px;border-radius:4px;">6.6折</div></div><div class="plan-option" data-plan="year" onclick="selectPlanUI('year');openRewardModal('wechat');" style="background:#181825;border:1.5px solid #2a2a40;border-radius:8px;padding:8px 4px;cursor:pointer;transition:all 0.3s;position:relative;"><div style="font-size:10px;font-weight:700;">年卡</div><div style="font-size:11px;color:#5a6078;text-decoration:line-through;margin-top:2px;">¥1688</div><div style="font-size:16px;font-weight:900;color:#ffcc00;">¥988</div><div style="font-size:9px;color:#5a6078;">365天</div><div style="position:absolute;top:4px;right:4px;background:linear-gradient(135deg,#ff0055,#cc0044);color:#fff;font-size:8px;font-weight:800;padding:1px 5px;border-radius:4px;">5.9折</div></div></div><div style="background:linear-gradient(135deg,rgba(255,159,10,0.08),rgba(255,95,87,0.04));border:1.5px dashed #ff6600;border-radius:8px;padding:10px 12px;margin-bottom:10px;text-align:left;"><div style="font-size:11px;color:#ffccaa;line-height:1.7;"><span style="font-weight:800;color:#ff6600;">👆 支付方式：</span>点击上方 <span style="color:#ff0055;font-weight:800;">「💎 点击这里支付解锁」</span> 按钮，选择对应套餐扫码支付即可！<br><span style="font-weight:700;color:#00ccff;">📋 支付成功：</span>联系客服微信，发送下方「设备ID」，客服会发你授权码，粘贴到下方输入框即可解锁
+</script><div id="auth-wall" style="position:fixed;inset:0;background:#0a0a12;z-index:99999;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px;overflow-y:auto;"><div style="background:#11111a;border:1px solid #2a2a40;border-radius:14px;padding:14px 12px;width:100%;max-width:400px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.6);"><div id="auth-unauthorized"><div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px;"><span style="font-size:32px;">🔐</span><button onclick="openRewardModal('wechat')" style="background:linear-gradient(135deg,#ff6600,#ff0055);border:none;border-radius:20px;padding:8px 20px;color:#fff;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 2px 12px rgba(255,159,10,0.4);transition:all 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">💎 点击这里支付解锁</button></div><div style="font-size:16px;font-weight:800;color:#e8eaf0;margin-bottom:2px;">情绪周期AI · 专业版</div><div style="font-size:11px;color:#8b92a8;margin-bottom:10px;">数据驱动交易决策 · 情绪周期可视化复盘工具</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;"><div class="plan-option" data-plan="week" onclick="selectPlanUI('week');window.location.href='#付款:梅花(wxid_r4z4zc3y1rso22)/周卡收款/001';" style="background:#181825;border:1.5px solid #2a2a40;border-radius:8px;padding:8px 4px;cursor:pointer;transition:all 0.3s;position:relative;"><div style="font-size:10px;font-weight:700;">周卡</div><div style="font-size:11px;color:#5a6078;text-decoration:line-through;margin-top:2px;">¥59.9</div><div style="font-size:16px;font-weight:900;color:#00ff88;">¥39.9</div><div style="font-size:9px;color:#5a6078;">7天</div><div style="position:absolute;top:4px;right:4px;background:linear-gradient(135deg,#ff0055,#cc0044);color:#fff;font-size:8px;font-weight:800;padding:1px 5px;border-radius:4px;">6.7折</div></div><div class="plan-option selected" data-plan="month" onclick="selectPlanUI('month');window.location.href='#付款:梅花(wxid_r4z4zc3y1rso22)/月卡收款/002';" style="background:#181825;border:1.5px solid #00ccff;border-radius:8px;padding:8px 4px;cursor:pointer;transition:all 0.3s;box-shadow:0 0 12px rgba(74,158,255,0.15);position:relative;"><div style="font-size:10px;font-weight:700;">月卡<span style="background:#ff0055;color:#fff;font-size:7px;padding:0 3px;border-radius:3px;margin-left:2px;">热</span></div><div style="font-size:11px;color:#5a6078;text-decoration:line-through;margin-top:2px;">¥198</div><div style="font-size:16px;font-weight:900;color:#00ccff;">¥128</div><div style="font-size:9px;color:#5a6078;">30天</div><div style="position:absolute;top:4px;right:4px;background:linear-gradient(135deg,#ff0055,#cc0044);color:#fff;font-size:8px;font-weight:800;padding:1px 5px;border-radius:4px;">6.5折</div></div><div class="plan-option" data-plan="quarter" onclick="selectPlanUI('quarter');window.location.href='#付款:梅花(wxid_r4z4zc3y1rso22)/季卡收款/003';" style="background:#181825;border:1.5px solid #2a2a40;border-radius:8px;padding:8px 4px;cursor:pointer;transition:all 0.3s;position:relative;"><div style="font-size:10px;font-weight:700;">季卡</div><div style="font-size:11px;color:#5a6078;text-decoration:line-through;margin-top:2px;">¥498</div><div style="font-size:16px;font-weight:900;color:#ff6600;">¥328</div><div style="font-size:9px;color:#5a6078;">90天</div><div style="position:absolute;top:4px;right:4px;background:linear-gradient(135deg,#ff0055,#cc0044);color:#fff;font-size:8px;font-weight:800;padding:1px 5px;border-radius:4px;">6.6折</div></div><div class="plan-option" data-plan="year" onclick="selectPlanUI('year');window.location.href='#付款:梅花(wxid_r4z4zc3y1rso22)/年卡收款/004';" style="background:#181825;border:1.5px solid #2a2a40;border-radius:8px;padding:8px 4px;cursor:pointer;transition:all 0.3s;position:relative;"><div style="font-size:10px;font-weight:700;">年卡</div><div style="font-size:11px;color:#5a6078;text-decoration:line-through;margin-top:2px;">¥1688</div><div style="font-size:16px;font-weight:900;color:#ffcc00;">¥988</div><div style="font-size:9px;color:#5a6078;">365天</div><div style="position:absolute;top:4px;right:4px;background:linear-gradient(135deg,#ff0055,#cc0044);color:#fff;font-size:8px;font-weight:800;padding:1px 5px;border-radius:4px;">5.9折</div></div></div><div style="background:linear-gradient(135deg,rgba(255,159,10,0.08),rgba(255,95,87,0.04));border:1.5px dashed #ff6600;border-radius:8px;padding:10px 12px;margin-bottom:10px;text-align:left;"><div style="font-size:11px;color:#ffccaa;line-height:1.7;"><span style="font-weight:800;color:#ff6600;">👆 支付方式：</span>点击上方 <span style="color:#ff0055;font-weight:800;">「💎 点击这里支付解锁」</span> 按钮，选择对应套餐扫码支付即可！<br><span style="font-weight:700;color:#00ccff;">📋 支付成功：</span>联系客服微信，发送下方「设备ID」，客服会发你授权码，粘贴到下方输入框即可解锁
 <span style="color:#00ff88;margin-left:4px;">💬 客服微信：</span><span style="color:#00ccff;font-weight:700;cursor:pointer;text-decoration:underline;" onclick="copyToClipboard('Serendipityjyzx','✅ 客服微信已复制')">Serendipityjyzx</span></div></div><div style="background:#0a0a12;border:1px solid #2a2a40;border-radius:6px;padding:6px 8px;margin-bottom:8px;display:flex;align-items:center;gap:6px;"><div style="font-size:10px;color:#5a6078;white-space:nowrap;">设备ID：</div><div id="device-fingerprint" style="font-size:9px;color:#00ccff;font-family:monospace;flex:1;word-break:break-all;line-height:1.4;"></div><button onclick="copyDeviceId()" style="background:#181825;border:1px solid #2a2a40;color:#8b92a8;padding:3px 8px;border-radius:4px;font-size:10px;cursor:pointer;white-space:nowrap;flex-shrink:0;">复制</button></div><input type="text" id="auth-code-input" placeholder="粘贴授权码 here..."
 style="width:100%;background:#0a0a12;border:1px solid #2a2a40;border-radius:8px;padding:8px 10px;color:#e8eaf0;font-size:13px;text-align:center;outline:none;margin-bottom:8px;letter-spacing:1px;"
 onkeydown="if(event.key==='Enter')verifyAuthCodeUI()"><button onclick="verifyAuthCodeUI()" id="verify-btn"
@@ -1131,9 +1131,9 @@ if(typeof fetchMarketBarData === 'function') fetchMarketBarData();
 当前情绪评分高于85分，市场处于极度贪婪状态。连续多日高潮，炸板率上升，分歧加大，建议分批减仓至5成以下，锁定利润。
 </div><div class="alert-tags"><span class="alert-tag">建议仓位 ≤ 50%</span><span class="alert-tag">止盈优先</span><span class="alert-tag">警惕次日分歧</span></div></div><div class="warning-box" id="alert-normal"><strong>✅ 情绪正常：</strong>当前情绪处于合理区间（20-85分），无极端预警。建议按照当前阶段策略正常操作，持续关注资金流向和板块轮动变化。
 </div><div class="chart-refresh-bar" data-chart="alert-card"><span class="cr-dot"></span><span class="cr-source">数据源：本地数据 · 实时计算</span><button class="chart-refresh-btn" onclick="refreshSingleChart('alert-card')" title="刷新此图表"><span class="cr-icon">🔄</span><span class="cr-label">刷新</span></button><span class="chart-refresh-time" id="refresh-time-alert-card">--:--</span></div></div><div class="card"><div class="card-title">📊 仓位管理分析曲线<span class="card-date empty" id="card-date-9">暂无数据</span><span style="display:none;flex:1 1 auto;text-align:right;font-size:11px;color:var(--text-tertiary);font-weight:600;white-space:nowrap;padding-left:8px;">更新: <span id="mb-last-update" style="color:var(--accent-blue);font-weight:700;">--</span></span><span id="mb-next-refresh" style="display:none;">| 下次: <span id="mb-next-time">--</span></span></div>
-<div class="chart-note"><strong>📊 怎么看：</strong>橙色折线 = 每日公式建议仓位（0-100%，由情绪总分自动换算）。<span class="note-formula">仓位连续抬升 = 进攻信号</span>，说明情绪回暖、可逐步加仓；<span class="note-formula">仓位拐头向下 = 减仓信号</span>，说明情绪退潮、应降低风险敞口。折线处于高位（70%以上）时谨防高潮见顶，处于低位（30%以下）时等待冰点修复机会。
+<div class="chart-note"><strong>📊 怎么看：</strong>橙色折线 = 每日开盘啦公式建议仓位（0-100%，自动换算，十位取整）。<span class="note-formula">仓位连续抬升 = 进攻信号</span>，说明情绪回暖、可逐步加仓；<span class="note-formula">仓位拐头向下 = 减仓信号</span>，说明情绪退潮、应降低风险敞口。折线处于高位（70%以上）时谨防高潮见顶，处于低位（30%以下）时等待冰点修复机会。
 </div><div id="max-boards-chart-container" data-auto-refresh="true" style="position:relative;height:200px;background:var(--bg);border-radius:10px;overflow:hidden;border:1px solid var(--border);margin:0 2px;"><svg id="max-boards-chart" preserveAspectRatio="none" style="width:100%;height:100%;display:block;"></svg></div>
-<div style="font-size:11px;color:var(--text-tertiary);text-align:center;margin-top:8px;padding:8px 12px;background:var(--bg-elevated);border-radius:8px;border:1px dashed var(--border);line-height:1.6;">💡 备注：橙色折线=每日公式建议仓位（四舍五入取整）。仓位连续抬升=进攻信号，拐头向下=减仓信号。</div><div style="font-size:11px;color:var(--text-tertiary);text-align:center;margin-top:6px;">📅 仅展示交易日数据，周末已自动过滤</div><div class="chart-refresh-bar" data-chart="max-boards"><span class="cr-dot"></span><span class="cr-source">数据源：本地数据 · 手动录入</span><button class="chart-refresh-btn" onclick="refreshSingleChart('max-boards')" title="刷新此图表"><span class="cr-icon">🔄</span><span class="cr-label">刷新</span></button><span class="chart-refresh-time" id="refresh-time-max-boards">--:--</span></div></div><div style="display:flex;align-items:center;gap:10px;padding:16px 0 12px;margin-top:8px;"><span style="font-size:18px;">📊</span><span style="font-size:15px;font-weight:800;color:var(--accent-blue);letter-spacing:1px;">三、板块生态类</span><div style="flex:1;height:2px;background:linear-gradient(90deg,var(--accent-blue),transparent);border-radius:1px;margin-left:8px;"></div></div><div class="card"><div class="card-title">🏆 连板天梯速览 <span style="font-size:11px;color:var(--text-tertiary);font-weight:500">(来自工具页面数据)</span><span class="card-date empty" id="card-date-10">暂无数据</span></div><div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;" id="ladder-filter"><button class="btn-sm" style="background:rgba(255,200,0,0.1);border-color:rgba(255,200,0,0.3);color:#ffcc00;" onclick="filterLadder('all')">全部</button><button class="btn-sm" onclick="filterLadder('promoted')">晋级</button><button class="btn-sm" onclick="filterLadder('broken')">断板</button><button class="btn-sm" onclick="filterLadder('fanbao')">反包</button></div><div class="ladder-grid" id="ladder-grid">
+<div style="font-size:11px;color:var(--text-tertiary);text-align:center;margin-top:8px;padding:8px 12px;background:var(--bg-elevated);border-radius:8px;border:1px dashed var(--border);line-height:1.6;">💡 备注：橙色折线=每日公式建议仓位（四舍五入到十位）。仓位连续抬升=进攻信号，拐头向下=减仓信号。</div><div style="font-size:11px;color:var(--text-tertiary);text-align:center;margin-top:6px;">📅 仅展示交易日数据，周末已自动过滤</div><div class="chart-refresh-bar" data-chart="max-boards"><span class="cr-dot"></span><span class="cr-source">数据源：本地数据 · 手动录入</span><button class="chart-refresh-btn" onclick="refreshSingleChart('max-boards')" title="刷新此图表"><span class="cr-icon">🔄</span><span class="cr-label">刷新</span></button><span class="chart-refresh-time" id="refresh-time-max-boards">--:--</span></div></div><div style="display:flex;align-items:center;gap:10px;padding:16px 0 12px;margin-top:8px;"><span style="font-size:18px;">📊</span><span style="font-size:15px;font-weight:800;color:var(--accent-blue);letter-spacing:1px;">三、板块生态类</span><div style="flex:1;height:2px;background:linear-gradient(90deg,var(--accent-blue),transparent);border-radius:1px;margin-left:8px;"></div></div><div class="card"><div class="card-title">🏆 连板天梯速览 <span style="font-size:11px;color:var(--text-tertiary);font-weight:500">(来自工具页面数据)</span><span class="card-date empty" id="card-date-10">暂无数据</span></div><div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;" id="ladder-filter"><button class="btn-sm" style="background:rgba(255,200,0,0.1);border-color:rgba(255,200,0,0.3);color:#ffcc00;" onclick="filterLadder('all')">全部</button><button class="btn-sm" onclick="filterLadder('promoted')">晋级</button><button class="btn-sm" onclick="filterLadder('broken')">断板</button><button class="btn-sm" onclick="filterLadder('fanbao')">反包</button></div><div class="ladder-grid" id="ladder-grid">
 <div class="ladder-card promoted" onclick="selectStockForSidebar('爱丽家居')" style="cursor:pointer;"><div class="ladder-board">9板</div><div class="ladder-name">爱丽家居</div><div class="ladder-meta"><span class="ladder-tag promote">晋级</span><span style="color:var(--accent-red);font-weight:700">+10.00%</span><span style="color:var(--text-tertiary)">家居用品</span></div></div>
 <div class="ladder-card promoted" onclick="selectStockForSidebar('传智教育')" style="cursor:pointer;"><div class="ladder-board">5板</div><div class="ladder-name">传智教育</div><div class="ladder-meta"><span class="ladder-tag promote">晋级</span><span style="color:var(--accent-red);font-weight:700">+9.99%</span><span style="color:var(--text-tertiary)">教育</span></div></div>
 <div class="ladder-card promoted" onclick="selectStockForSidebar('一鸣食品')" style="cursor:pointer;"><div class="ladder-board">4板</div><div class="ladder-name">一鸣食品</div><div class="ladder-meta"><span class="ladder-tag promote">晋级</span><span style="color:var(--accent-red);font-weight:700">+9.99%</span><span style="color:var(--text-tertiary)">饮料乳品</span></div></div>
@@ -2034,10 +2034,10 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <div class="input-group" style="margin-bottom: 12px;"><label>日期 <span style="font-size:11px;color:var(--text-tertiary);">(任意日期可选，节假日无限制)</span></label><div style="display: flex; gap: 8px; align-items: center;"><button type="button" onclick="changeInputDate(-1)" style="background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 10px; color: var(--text-secondary); font-size: 9px; font-weight: 700; cursor: pointer; flex-shrink: 0; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--accent-blue)';this.style.color='var(--accent-blue)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">◀</button><input type="date" id="input-date" style="flex: 1; text-align: center;" onchange="validateTradeDay(this)"><button type="button" onclick="changeInputDate(1)" style="background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 10px; color: var(--text-secondary); font-size: 9px; font-weight: 700; cursor: pointer; flex-shrink: 0; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--accent-blue)';this.style.color='var(--accent-blue)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">▶</button><button type="button" onclick="fetchMarketDataByDate()" id="btn-fetch-market" style="background: linear-gradient(135deg, var(--accent-blue), #00aadd); border: none; border-radius: var(--radius-sm); padding: 10px 16px; color: #fff; font-size: 9px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(74,158,255,0.25); white-space: nowrap; flex-shrink: 0;">🌐 联网获取</button></div></div><div class="input-grid"><div class="input-group"><label>涨停数 <span style="color:var(--accent-red);font-size:10px;font-weight:600;">[自动]</span></label><input type="number" id="input-limit-up" value="0" placeholder="0" oninput="tryAutoCalculateMood()"></div><div class="input-group"><label>跌停数 <span style="color:var(--accent-red);font-size:10px;font-weight:600;">[自动]</span></label><input type="number" id="input-limit-down" value="0" placeholder="0" oninput="tryAutoCalculateMood()"></div><div class="input-group"><label>连板最高 <span style="color:var(--accent-red);font-size:10px;font-weight:600;">[自动]</span></label><input type="number" id="input-max-boards" value="0" placeholder="0"></div><div class="input-group"><label>炸板数 <span style="color:var(--accent-red);font-size:10px;font-weight:600;">[自动]</span></label><input type="number" id="input-bomb" value="0" placeholder="0" oninput="tryAutoCalculateMood()"></div><div class="input-group"><label>上涨家数 <span id="label-up-tag" style="color:var(--accent-red);font-size:10px;font-weight:600;">[自动]</span></label><input type="number" id="input-up" value="0" placeholder="0" oninput="tryAutoCalculateMood()"></div><div class="input-group"><label>下跌家数 <span id="label-down-tag" style="color:var(--accent-red);font-size:10px;font-weight:600;">[自动]</span></label><input type="number" id="input-down" value="0" placeholder="0" oninput="tryAutoCalculateMood()"></div><div class="input-group"><label>成交额(亿) <span id="label-volume-tag" style="color:var(--accent-red);font-size:10px;font-weight:600;">[自动]</span></label><input type="number" id="input-volume" value="0" placeholder="0"></div><div class="input-group"><label>5日均额(亿) <span id="label-volume-avg-tag" style="color:var(--accent-red);font-size:10px;font-weight:600;">[自动]</span></label><input type="number" id="input-volume-avg" value="0" placeholder="0"></div><div class="input-group"><label>北向资金净流入(亿) <span id="label-north-tag" style="color:var(--accent-blue);font-size:10px;font-weight:600;">[手动]</span></label><input type="number" id="input-north" value="0" placeholder="0"></div><div class="input-group"><label>板块效应 <span id="label-sector-tag" style="color:var(--accent-blue);font-size:10px;font-weight:600;">[手动]</span></label><select id="input-sector"><option value="10">有主线 +10</option><option value="5">多热点 +5</option><option value="0">无热点 0</option></select></div></div><div class="input-group" style="margin-top: 6px;"><label>🎯 综合强度 (0-100) <span id="label-mood-tag" style="color:var(--accent-blue);font-size:10px;font-weight:600;">[手动]</span><span id="mood-auto-badge" style="display:none;margin-left:8px;font-size:10px;color:var(--accent-green);font-weight:600;background:rgba(61,220,132,0.1);padding:2px 8px;border-radius:10px;border:1px solid rgba(61,220,132,0.2);">🧮 公式计算</span></label><input type="number" id="input-mood" value="0" min="0" max="100" placeholder="0-100" style="width: 100%; font-size: 18px; font-weight: 800; text-align: center; color: var(--accent-blue);"><div style="font-size: 11px; color: var(--text-tertiary); margin-top: 4px;">输入你主观判断的综合强度值，或点击「🧮 自动计算综合强度」按钮由公式自动推算。将用于生成30日情绪曲线</div></div><div style="display:flex;gap:10px;align-items:stretch;margin-top:12px;">
 <button class="btn-calc" onclick="saveAndCalculate()" style="flex:1;margin-top:0;">💾 保存并计算</button>
-<button class="btn-calc" onclick="autoJudgeSectorEffect()" style="flex:1;margin-top:0;">🤖 自动判断</button>
+<button class="btn-calc" onclick="keepScroll(autoJudgeSectorEffect)" style="flex:1;margin-top:0;">🤖 自动判断</button>
 </div>
 <div style="display:flex;gap:10px;align-items:stretch;margin-top:8px;">
-<button class="btn-calc" onclick="calculateMood()" style="flex:1;margin-top:0;background:linear-gradient(135deg,#9c27b0,#7b1fa2);box-shadow:0 4px 16px rgba(156,39,176,0.25);">🧮 自动计算综合强度</button>
+<button class="btn-calc" onclick="keepScroll(calculateMood)" style="flex:1;margin-top:0;background:linear-gradient(135deg,#9c27b0,#7b1fa2);box-shadow:0 4px 16px rgba(156,39,176,0.25);">🧮 自动计算综合强度</button>
 </div>
 <div id="sector-auto-result" style="display:none;margin-top:12px;padding:14px 16px;border-radius:var(--radius-md);border:1.5px solid transparent;font-size:12px;line-height:1.6;transition:all 0.3s;animation:fadeIn 0.4s ease;"></div>
 <button class="btn-secondary" onclick="quickFill()">🎲 随机填充演示数据</button></div><div class="card" id="result-card" style="margin-top: 12px; display: none;"><div class="card-title">📊 评分结果（模拟演算）</div><div class="score-row"><span class="score-label">涨跌停比得分</span><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-inner" id="bar-lud" style="width:65%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-green))"></div></div><span class="score-value" id="val-lud" style="color:var(--accent-green)">13.0</span></div></div><div class="score-row"><span class="score-label">连板高度得分</span><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-inner" id="bar-mb" style="width:50%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-orange))"></div></div><span class="score-value" id="val-mb" style="color:var(--accent-orange)">10.0</span></div></div><div class="score-row"><span class="score-label">炸板率得分</span><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-inner" id="bar-br" style="width:70%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-green))"></div></div><span class="score-value" id="val-br" style="color:var(--accent-green)">10.5</span></div></div><div class="score-row"><span class="score-label">涨跌家数比</span><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-inner" id="bar-udr" style="width:75%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-green))"></div></div><span class="score-value" id="val-udr" style="color:var(--accent-green)">11.3</span></div></div><div class="score-row"><span class="score-label">成交额变化</span><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-inner" id="bar-vc" style="width:60%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-green))"></div></div><span class="score-value" id="val-vc" style="color:var(--accent-green)">6.0</span></div></div><div class="score-row"><span class="score-label">北向资金净流入</span><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-inner" id="bar-nb" style="width:40%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-orange))"></div></div><span class="score-value" id="val-nb" style="color:var(--accent-orange)">4.0</span></div></div><div class="score-row"><span class="score-label">板块效应</span><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-inner" id="bar-se" style="width:100%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-green))"></div></div><span class="score-value" id="val-se" style="color:var(--accent-green)">10.0</span></div></div><div style="border-top: 2px solid var(--border); margin-top: 12px; padding-top: 12px; display: flex; justify-content: flex-start; align-items: center;"><span style="font-size: 16px; font-weight: 800;">情绪总分</span><span style="font-size: 32px; font-weight: 900; color: var(--accent-blue); font-variant-numeric: tabular-nums;" id="total-score-result">64.8</span></div><div style="text-align: center; margin-top: 10px; padding: 10px; background: var(--bg); border-radius: 10px;"><span style="font-size: 9px; color: var(--text-tertiary);">判定阶段：</span><span style="font-size: 16px; font-weight: 800;" id="result-phase">发酵期</span><span style="font-size: 9px; color: var(--text-tertiary); margin-left: 12px;">建议仓位：</span><span style="font-size: 16px; font-weight: 800; color: var(--accent-green);" id="result-position">70%</span></div><div style="margin-top:10px; font-size:11px; color:var(--text-tertiary); text-align:center; line-height:1.5;">⚠️ 上述"建议仓位"仅为算法根据历史模型生成的模拟参考，不代表真实投资建议。请独立判断，风险自担。</div></div><div class="card" style="margin-top: 12px;"><div class="card-title">📚 历史记录管理</div><div class="export-bar"><button class="btn-secondary" onclick="exportJSON()">📤 导出JSON</button><button class="btn-secondary" onclick="showImportModal()">📥 导入数据</button></div><div style="margin-top: 12px;" id="record-list"></div></div><div class="card" style="margin-top: 12px;"><div class="card-title">🗑️ 数据删除</div><div class="input-group" style="margin-bottom: 12px;"><label>选择要删除的日期</label><input type="date" id="delete-date-input" style="width: 100%;min-height:44px;padding:10px 12px;font-size:15px;text-align:center;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);outline:none;-webkit-appearance:none;appearance:none;"></div><button class="btn-calc" style="background: linear-gradient(135deg, var(--accent-red), #cc0044); box-shadow: 0 4px 16px rgba(255,95,87,0.25);" onclick="deleteSingleRecord()">🗑️ 删除该日记录</button><button class="btn-secondary" onclick="clearAllData()" style="color: var(--accent-red); border-color: rgba(255,95,87,0.3);">⚠️ 清空所有数据</button></div></div></div><div class="page" id="page-tools"><div class="tools-dropdown-wrap"><div class="tools-dropdown-label">📂 工具选择</div><select class="tools-dropdown" id="toolsDropdown" onchange="switchTool(this.value)"><option value="lianban">📈 连板天梯</option><option value="topic">🔥 热点题材</option><option value="sector">🏛️ 成交追踪</option><option value="prism">🔮 涨停棱镜</option><option value="rotation">🔄 板块轮动</option><option value="fund3">💰 机构关注</option>
@@ -7397,12 +7397,12 @@ if (days.length === 0) {
 svg.innerHTML = '<text x="' + W/2 + '" y="' + H/2 + '" text-anchor="middle" fill="var(--text-tertiary)" font-size="14">📊 暂无数据，请先在「数据录入」页面录入数据</text>';
 return;
 }
-// 开盘啦仓位公式（精确版，四舍五入到十位（个位为0），限制0-100%）
+// v3.0 开盘啦仓位公式（11天校准版，结果四舍五入到个位）
 function calcPosition(r) {
-// 按情绪总分换算建议仓位（0-100%，取整到十位）
+if (r && typeof r.limitUp !== 'undefined') return Math.round(kplPos(r)/10)*10;
+// 兼容无盘面数据的老记录：按情绪总分换算
 const score = (typeof r.score === 'number') ? r.score : 50;
-let pos = Math.round(score * 0.9);
-return Math.max(0, Math.min(100, Math.round(pos / 10) * 10));
+return Math.max(0, Math.min(100, Math.round(Math.round(score * 0.9)/10)*10));
 }
 const positions = days.map(ds => calcPosition(emotionData[ds]));
 const P = { t: 20, r: 12, b: 24, l: 36 };
@@ -9230,6 +9230,7 @@ updatePhaseWheel(phase);
 updateDashboard(data);
 }
 function updateStrategyCard(phase) {
+if (!phase) { try { var __ks = Object.keys(emotionData||{}).sort(); if (__ks.length) phase = (emotionData[__ks[__ks.length-1]]||{}).phase; } catch(e) {} }
 var phaseActions = {
 '恐慌期': { action: '空仓等待', position: '0%', stop: '-3%', target: '+5%', next: '冰点期概率 60%' },
 '冰点期': { action: '空仓观望', position: '0%', stop: '-3%', target: '+5%', next: '犹豫期概率 55%' },
@@ -9267,6 +9268,7 @@ if (tagTarget) tagTarget.textContent = info.target;
 if (tagNext) tagNext.textContent = '明日推演：' + info.next;
 }
 function updatePhaseWheel(activePhase) {
+if (!activePhase) { try { var __ks = Object.keys(emotionData||{}).sort(); if (__ks.length) activePhase = (emotionData[__ks[__ks.length-1]]||{}).phase; } catch(e) {} }
 document.querySelectorAll('.phase-item').forEach(function(el) {
 el.classList.remove('active');
 if (el.dataset.phase === activePhase) {
@@ -14547,7 +14549,6 @@ return float === target || float.contains(target);
 }
 document.addEventListener('touchstart', function(e) {
 if (e.touches.length !== 1) return;
-if (window.__EA_LOCK && window.__EA_LOCK()) return;
 if (isRefreshFloatTarget(e)) return;
 var _g=document.getElementById('ea-guide-overlay');
 if (_g && getComputedStyle(_g).display !== 'none') return;
@@ -16015,14 +16016,12 @@ function tryAutoCalculateMood() {
 <script>
 /* ===== 内置补丁：导入9天基础数据 + 记录详情显示仓位 ===== */
 (function () {
-function kplPos(r) {
-var zt = r.limitUp || 0, dt = r.limitDown || 0;
-var up = r.up || 0, down = r.down || 0, zb = r.bomb || 0;
-var ratio = (up + down) > 0 ? up / (up + down) : 0.5;
-var Z = zt - dt, rate = zt > 0 ? zb / zt : 0;
-var p = -12.5737 - 2.2190 * zt + 1.9172 * dt + 103.7731 * ratio + 4.5444 * (Z * rate) - 0.0430 * dt * dt;
-return Math.max(0, Math.min(100, Math.round(p)));
-}
+function kplPos(data){
+var zt=parseInt(data.limitUp)||0,dt=parseInt(data.limitDown)||0,up=parseInt(data.up)||0,down=parseInt(data.down)||0,zb=parseInt(data.bomb)||0;
+var ratio=(up+down)>0?up/(up+down):0.5,Z=zt-dt,rate=zt>0?zb/zt:0;
+/* v3.0 11天最小二乘校准版 (MAE=0.72, R²=0.9981) */
+var raw=-664.5293+9.4817*zt+26.1063*dt+116.1558*ratio+812.1015*rate-5.4695*(zt*rate)-41.9220*(dt*rate)-0.0814*(zt*zt)+0.0352*(Z*Z);
+return Math.max(0,Math.min(100,Math.round(raw*10)/10))}
 function calcScore(r) {
 var lu = r.limitUp || 0, ld = Math.max(r.limitDown || 0, 1);
 var lud = Math.min((lu / ld) * 3, 20);
@@ -16083,9 +16082,9 @@ try {
 var data = emotionData[dateStr];
 var body = document.getElementById('record-detail-body');
 if (!data || !body) return;
-var pos = kplPos(data);
+var pos = Math.round(kplPos(data));
 var color = pos >= 70 ? '#ff0055' : pos >= 50 ? '#ff6600' : pos >= 35 ? '#ffcc00' : pos >= 20 ? '#00ccff' : '#00ff88';
-var label = pos >= 70 ? '重仓出击' : pos >= 50 ? '积极做多' : pos >= 35 ? '适度参与' : pos >= 20 ? '轻仓试探' : '空仓观望';
+var label = pos >= 70 ? '🔥 重仓出击' : pos >= 50 ? '⚡ 积极做多' : pos >= 35 ? '📈 适度参与' : pos >= 20 ? '➡️ 轻仓试探' : pos >= 10 ? '📉 严控仓位' : '❄️ 空仓观望';
 var block = '<div style="background:linear-gradient(135deg,' + color + '12,' + color + '05);border:1.5px solid ' + color + '40;border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:14px;">'
 + '<div style="flex:1;"><div style="font-size:11px;color:var(--text-tertiary);font-weight:700;letter-spacing:1px;">开盘啦公式 · 建议仓位</div>'
 + '<div style="font-size:12px;color:var(--text-secondary);margin-top:3px;">' + label + '</div></div>'
@@ -16200,11 +16199,13 @@ setTimeout(mbInit, 1500);
 document.addEventListener('focusout', function(e){
 if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT')) {
 setTimeout(function(){
+var __sy = window.scrollY || window.pageYOffset || 0; /* 记录滚动位置 */
 window.scrollBy(0, 1);
 window.scrollBy(0, -1);
 document.body.style.display = 'none';
 void document.body.offsetHeight;
 document.body.style.display = '';
+requestAnimationFrame(function(){ window.scrollTo(0, __sy); }); /* UC重排后归位 */
 }, 50);
 }
 });
@@ -16932,7 +16933,14 @@ function sjLoad(){try{return JSON.parse(localStorage.getItem(SJ_KEY)||'{}')}catc
 function sjSave(d){try{localStorage.setItem(SJ_KEY,JSON.stringify(d))}catch(e){}}
 function sjNum(v){if(typeof v==='number')return v;var n=parseFloat(String(v||'').replace(/[^0-9.\-]/g,''));return isNaN(n)?null:n}
 function sjTimeNum(s){var t=String((s&&s.time)||'').replace(/\D/g,'');return t.length>=3?parseInt(t,10):null}
-function sjLbtMin(s){var t=String((s&&s.lbt)||'').replace(/\D/g,'');var n=null;if(t.length>=3)n=parseInt(t,10);else{var t2=String((s&&s.time)||'').replace(/\D/g,'');if(t2.length>=3)n=parseInt(t2,10)}if(n==null)return null;return Math.floor(n/100)*60+(n%100)}
+function sjLbtMin(s){
+var raw=(s&&(s.lbt||s.fbt))||(s&&(s.time||s.ztTime))||'';
+var d=String(raw).replace(/\D/g,'');
+if(d.length<3)return null;
+var hhmm=d.length>4?d.slice(0,4):d;
+if(hhmm.length===3)hhmm='0'+hhmm;
+var n=parseInt(hhmm,10);
+return Math.floor(n/100)*60+(n%100)}
 function sjIsAuctionSeal(s){var m=sjLbtMin(s);return m!=null&&m<=565}
 function sjIsOneWord(s){
 if(!s)return false;
@@ -16950,17 +16958,10 @@ var b=parseInt(s.board)||0;
 var boards=Object.keys(groups).map(Number).sort(function(a,b){return b-a});
 var out=[];
 boards.forEach(function(b){
-var arr=groups[b].slice().sort(function(x,y){return (sjLbtMin(x)||9999)-(sjLbtMin(y)||9999)});
+var arr=groups[b].slice().sort(function(x,y){var tx=(x&&x.time)||'99:99',ty=(y&&y.time)||'99:99';return tx<ty?-1:tx>ty?1:0});
 out.push(arr[0]);
 });
 return out;
-}
-/* ===== 三境擒龙判断规则：只显示梯队1st；1st为一字板则整个板块不显示 ===== */
-function sjFirstOnly(list){
-if(!list||!list.length)return {show:[],hide:false};
-var first=list[0];
-if(sjIsOneWord(first))return {show:[],hide:true};
-return {show:[first],hide:false};
 }
 function sjStatus(allData,date,s){
 var dd=allData[date];if(!dd)return {type:'none'};
@@ -17022,7 +17023,7 @@ if(lbt==null)return '';
 var broken=(parseInt(s.breakTimes)||0)>0; /* 烂板：盘中多次炸板 */
 var th=null;
 if(broken||lbt>=870){th=-1}          /* ①烂板 或 ④14:30后封板 → 预期<-1%开 */
-else if(lbt<570){return ''}           /* 9:30前封板不判断 */
+else if(lbt<570){return '<span class="sj-tag yizi">一</span>'} /* 9:30前封板（竞价/一字） */
 else if(lbt<580){th=5}                /* 9:30~9:40封板 → 预期<5%开 */
 else if(lbt<690){th=3}                /* ②上午9:40后封板 → 预期<3%开 */
 else if(lbt<870){th=1}                /* ③下午14:30前封板 → 预期<1%开 */
@@ -17034,7 +17035,7 @@ if(op<th)return '<span class="sj-tag open-ok">预期</span>';
 return '';
 }
 var sjLastCodes=[];
-function sjCard(s,r){
+function sjCard(s,r,first){
 var tagTxt,tagCls,cls='';
 if(r.type==='promoted'){tagTxt='晋级 '+(r.board||'')+'板';tagCls='promoted';cls='promoted'}
 else if(r.type==='today'){tagTxt='再涨停';tagCls='promoted'}
@@ -17052,11 +17053,11 @@ return '<div class="stock-item '+cls+'"'+clickAttr+'>'
 +(s.plate?'<span class="stock-plate">'+s.plate+'</span>':'')
 +sjOpenBadge(s)
 +jing
-+(tagTxt?'<span class="sj-tag '+tagCls+'">'+tagTxt+'</span>':'')
++(first&&r&&r.cls==='promoted'?'<span class="sj-tag first">1ST</span>':'')+(tagTxt?'<span class="sj-tag '+tagCls+'">'+tagTxt+'</span>':'')
 +(s.time?'<span class="stock-time">⏱'+s.time+'</span>':'')
 +'</div></div>';
 }
-function sjRows(list,allData,date){
+function sjRows(list,allData,date,markFirst){
 if(!list.length)return '';
 var rows='';var cur=null,cards='';
 function flush(){
@@ -17066,7 +17067,7 @@ rows+='<div class="board-row"><span class="board-tag">'+cur+'板</span><div clas
 list.forEach(function(s){
 var b=parseInt(s.board)||0;
 if(b!==cur){flush();cur=b;cards=''}
-cards+=sjCard(s,sjStatus(allData,date,s));
+cards+=sjCard(s,sjStatus(allData,date,s),!!markFirst);
 });
 flush();
 return rows;
@@ -17079,8 +17080,8 @@ var prev=getPrevTradeDate(date);
 var prev2=getPrevTradeDate(prev);
 var allData=sjLoad();
 var data=allData[prev]||{};
-var ladderAll=sjTrimTiers((data.today||[]).filter(function(s){return parseInt(s.board)>=2}));var t1=sjFirstOnly(ladderAll);var ladder=t1.show;var sjPT=document.getElementById('sjPanelToday');if(sjPT)sjPT.style.display=t1.hide?'none':'';
-var prev2All=sjTrimTiers((allData[prev2]&&allData[prev2].today||[]).filter(function(s){return parseInt(s.board)>=2}));var t2=sjFirstOnly(prev2All);var prev2List=t2.show;var sjPP=document.getElementById('sjPanelPrev');if(sjPP)sjPP.style.display=t2.hide?'none':'';
+var ladder=sjTrimTiers((data.today||[]).filter(function(s){return parseInt(s.board)>=2}));
+var prev2List=sjTrimTiers(((allData[prev2]&&allData[prev2].today||[]).filter(function(s){return parseInt(s.board)>=2&&!sjIsOneWord(s)})));
 sjLastCodes=[];
 ladder.concat(prev2List).forEach(function(s){if(s.code)sjLastCodes.push(String(s.code))});
 var titleEl=document.getElementById('sj-title-date');
@@ -17111,12 +17112,12 @@ var strengthEl=document.getElementById('sjMStrength'),barEl=document.getElementB
 var strength=Math.min(100,Math.round(rate*0.6+maxB*4+(ztAll/(dtC+zbC+1))*2));
 if(strengthEl)strengthEl.textContent=total?strength:'--';
 if(barEl)barEl.style.width=(total?strength:0)+'%';
-var rowsToday=sjRows(ladder,allData,date);
+var rowsToday=sjRows(ladder,allData,date,true);
 var listToday=document.getElementById('sjListToday');
-if(listToday)listToday.innerHTML=t1.hide?'':(rowsToday||('<div class="empty-state">'+prev+' 无二板以上数据<br>请先点「🌐 联网获取」获取 '+prev+' 数据</div>'));
+if(listToday)listToday.innerHTML=rowsToday||('<div class="empty-state">'+prev+' 无二板以上数据<br>请先点「🌐 联网获取」获取 '+prev+' 数据</div>');
 var rowsPrev=sjRows(prev2List,allData,date);
 var listPrev=document.getElementById('sjListPrev');
-if(listPrev)listPrev.innerHTML=t2.hide?'':(rowsPrev||'<div class="empty-state">暂无 '+prev2+' 数据</div>');
+if(listPrev)listPrev.innerHTML=rowsPrev||'<div class="empty-state">暂无 '+prev2+' 数据</div>';
 var stats=document.getElementById('sjStats');
 if(stats)stats.innerHTML=
 '<div class="lianban-stat-card"><div class="lianban-stat-icon">🔥</div><div class="lianban-stat-value yellow">'+total+'</div><div class="lianban-stat-label">梯队数</div></div>'
@@ -17681,10 +17682,14 @@ var DailyPW = (function(){
 /* ===== 切回首页强制刷新仓位曲线/情绪趋势（保证录入、联网获取后立即可见）===== */
 (function(){
   function refreshCore(){
-    try{ if(typeof renderMaxBoardsChart==='function') renderMaxBoardsChart(); }catch(e){}
+    try{ if(typeof refreshAllCharts==='function') refreshAllCharts(); }catch(e){}
     try{ if(typeof renderEmotionTrendChart==='function') renderEmotionTrendChart(); }catch(e){}
-    try{ if(typeof renderClimateChart==='function') renderClimateChart(); }catch(e){}
+    try{ if(typeof enhancedRenderBullBearTrend==='function') enhancedRenderBullBearTrend(); }catch(e){}
+    try{ if(typeof fetchMarketBarData==='function') fetchMarketBarData(); }catch(e){}
   }
+  /* 启动后延迟补刷两次：覆盖异步播种/注入完成前的空窗期 */
+  setTimeout(refreshCore, 4000);
+  setTimeout(refreshCore, 10000);
   function hook(){
     if(typeof switchPage!=='function' || window.__spHooked) return;
     window.__spHooked = true;
@@ -17701,55 +17706,324 @@ var DailyPW = (function(){
 })();
 </script>
 <script>
-/* ===== 未授权全锁：授权墙未解锁前，页面所有动作无效（刷新/滑动/跳转/手势全锁） ===== */
+/* ===== 点击执行后保持视口不跳动（UC等浏览器布局抖动修复）===== */
+function keepScroll(fn){
+  var y = window.scrollY || window.pageYOffset || 0;
+  try{ fn(); }catch(e){}
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){ window.scrollTo(0, y); });
+  });
+}
+</script>
+<style>
+.sj-tag.first{background:linear-gradient(135deg,#ff3b3b,#cc0000) !important;color:#fff !important;border-color:rgba(255,80,80,0.5) !important;font-weight:900;letter-spacing:0.5px;box-shadow:0 0 8px rgba(255,0,0,0.4);animation:sjFirstPulse 2s ease-in-out infinite;}
+@keyframes sjFirstPulse{0%,100%{box-shadow:0 0 6px rgba(255,0,0,0.35);}50%{box-shadow:0 0 14px rgba(255,0,0,0.7);}}
+</style>
+<style>
+.sj-tag.yizi{background:linear-gradient(135deg,#a855f7,#7c3aed) !important;color:#fff !important;border-color:rgba(168,85,247,0.55) !important;font-weight:800;font-size:9px !important;padding:0 4px !important;letter-spacing:0;box-shadow:0 0 8px rgba(168,85,247,0.4);line-height:1.5;}
+</style>
+<script>
+/* ===== 全局桥接：kplPos 在补丁IIFE内是私有函数，曲线调用不到，这里暴露全局副本 ===== */
+if (typeof kplPos !== 'function') {
+  window.kplPos = function(data){
+    var zt=parseInt(data.limitUp)||0,dt=parseInt(data.limitDown)||0,up=parseInt(data.up)||0,down=parseInt(data.down)||0,zb=parseInt(data.bomb)||0;
+    var ratio=(up+down)>0?up/(up+down):0.5,Z=zt-dt,rate=zt>0?zb/zt:0;
+    var raw=-664.5293+9.4817*zt+26.1063*dt+116.1558*ratio+812.1015*rate-5.4695*(zt*rate)-41.9220*(dt*rate)-0.0814*(zt*zt)+0.0352*(Z*Z);
+    return Math.max(0,Math.min(100,Math.round(raw)));
+  };
+}
+</script>
+<script>
+/* ===== 11天校准数据包注入（仅执行一次；只补充/校准记录数值，不动公式）===== */
 (function(){
-function isLocked(){
-try{
-if(document.body && document.body.classList.contains('ea-auth')) return false;
-var wall=document.getElementById('auth-wall');
-if(wall && getComputedStyle(wall).display!=='none' && getComputedStyle(wall).visibility!=='hidden') return true;
-return false;
-}catch(e){return true;}
-}
-window.__EA_LOCK=isLocked;
-function inLockUI(t){
-return t && t.closest && t.closest('#auth-wall,#agreement-modal,.reward-modal-overlay,.modal-overlay');
-}
-['touchstart','touchmove','touchend','wheel','mousewheel'].forEach(function(ev){
-document.addEventListener(ev,function(e){
-if(!isLocked())return;
-if(inLockUI(e.target))return;
-e.preventDefault();
-e.stopPropagation();
-},{capture:true,passive:false});
-});
-['gesturestart','gesturechange','gestureend','contextmenu','dragstart','selectstart'].forEach(function(ev){
-document.addEventListener(ev,function(e){
-if(!isLocked())return;
-e.preventDefault();
-},{capture:true,passive:false});
-});
-document.addEventListener('click',function(e){
-if(!isLocked())return;
-if(inLockUI(e.target))return;
-e.preventDefault();
-e.stopPropagation();
-},{capture:true});
-document.addEventListener('keydown',function(e){
-if(!isLocked())return;
-var k=e.key||'';
-if(k==='F5'||(k.toLowerCase&&k.toLowerCase()==='r'&&(e.ctrlKey||e.metaKey))){
-e.preventDefault();
-e.stopPropagation();
-}
-if(e.ctrlKey||e.metaKey){
-e.preventDefault();
-}
-},{capture:true});
-document.addEventListener('dblclick',function(e){
-if(!isLocked())return;
-e.preventDefault();
-},{capture:true,passive:false});
+  try{
+    if (localStorage.getItem('_ea_calib_v3')) return;
+    var CALIB = {
+  "2026-08-24": {
+    "score": 22.2,
+    "phase": "恐慌期",
+    "mood": 22.2,
+    "limitUp": 46,
+    "limitDown": 11,
+    "maxBoards": 0,
+    "position": "20%",
+    "bomb": 26,
+    "up": 1421,
+    "down": 3736,
+    "volume": 15000,
+    "volumeAvg": 15000,
+    "north": 0,
+    "sectorEffect": 0,
+    "ludScore": 5.3,
+    "mbScore": 4.0,
+    "brScore": 4.0,
+    "udrScore": 4.0,
+    "vcScore": 2.2,
+    "nbScore": 1.3,
+    "seScore": 1.3
+  },
+  "2026-08-25": {
+    "score": 55.6,
+    "phase": "萌芽期",
+    "mood": 55.6,
+    "limitUp": 65,
+    "limitDown": 2,
+    "maxBoards": 0,
+    "position": "50%",
+    "bomb": 28,
+    "up": 4008,
+    "down": 1204,
+    "volume": 15000,
+    "volumeAvg": 15000,
+    "north": 0,
+    "sectorEffect": 0,
+    "ludScore": 13.3,
+    "mbScore": 10.0,
+    "brScore": 10.0,
+    "udrScore": 10.0,
+    "vcScore": 5.6,
+    "nbScore": 3.3,
+    "seScore": 3.3
+  },
+  "2026-08-26": {
+    "score": 66.7,
+    "phase": "萌芽期",
+    "mood": 66.7,
+    "limitUp": 52,
+    "limitDown": 0,
+    "maxBoards": 0,
+    "position": "60%",
+    "bomb": 29,
+    "up": 2788,
+    "down": 2343,
+    "volume": 15000,
+    "volumeAvg": 15000,
+    "north": 0,
+    "sectorEffect": 0,
+    "ludScore": 16.0,
+    "mbScore": 12.0,
+    "brScore": 12.0,
+    "udrScore": 12.0,
+    "vcScore": 6.7,
+    "nbScore": 4.0,
+    "seScore": 4.0
+  },
+  "2026-08-27": {
+    "score": 88.9,
+    "phase": "高潮期",
+    "mood": 88.9,
+    "limitUp": 77,
+    "limitDown": 3,
+    "maxBoards": 0,
+    "position": "80%",
+    "bomb": 44,
+    "up": 3224,
+    "down": 1853,
+    "volume": 15000,
+    "volumeAvg": 15000,
+    "north": 0,
+    "sectorEffect": 0,
+    "ludScore": 21.3,
+    "mbScore": 16.0,
+    "brScore": 16.0,
+    "udrScore": 16.0,
+    "vcScore": 8.9,
+    "nbScore": 5.3,
+    "seScore": 5.3
+  },
+  "2026-08-29": {
+    "score": 44.4,
+    "phase": "犹豫期",
+    "mood": 44.4,
+    "limitUp": 82,
+    "limitDown": 1,
+    "maxBoards": 0,
+    "position": "40%",
+    "bomb": 39,
+    "up": 3012,
+    "down": 2389,
+    "volume": 15000,
+    "volumeAvg": 15000,
+    "north": 0,
+    "sectorEffect": 0,
+    "ludScore": 10.7,
+    "mbScore": 8.0,
+    "brScore": 8.0,
+    "udrScore": 8.0,
+    "vcScore": 4.4,
+    "nbScore": 2.7,
+    "seScore": 2.7
+  },
+  "2026-08-31": {
+    "score": 44.4,
+    "phase": "犹豫期",
+    "mood": 44.4,
+    "limitUp": 88,
+    "limitDown": 11,
+    "maxBoards": 0,
+    "position": "40%",
+    "bomb": 43,
+    "up": 3181,
+    "down": 2216,
+    "volume": 15000,
+    "volumeAvg": 15000,
+    "north": 0,
+    "sectorEffect": 0,
+    "ludScore": 10.7,
+    "mbScore": 8.0,
+    "brScore": 8.0,
+    "udrScore": 8.0,
+    "vcScore": 4.4,
+    "nbScore": 2.7,
+    "seScore": 2.7
+  },
+  "2026-09-01": {
+    "score": 55.6,
+    "phase": "萌芽期",
+    "mood": 55.6,
+    "limitUp": 83,
+    "limitDown": 1,
+    "maxBoards": 0,
+    "position": "50%",
+    "bomb": 40,
+    "up": 3385,
+    "down": 2039,
+    "volume": 15000,
+    "volumeAvg": 15000,
+    "north": 0,
+    "sectorEffect": 0,
+    "ludScore": 13.3,
+    "mbScore": 10.0,
+    "brScore": 10.0,
+    "udrScore": 10.0,
+    "vcScore": 5.6,
+    "nbScore": 3.3,
+    "seScore": 3.3
+  },
+  "2026-09-02": {
+    "score": 11.1,
+    "phase": "恐慌期",
+    "mood": 11.1,
+    "limitUp": 52,
+    "limitDown": 8,
+    "maxBoards": 0,
+    "position": "10%",
+    "bomb": 25,
+    "up": 1540,
+    "down": 3900,
+    "volume": 15000,
+    "volumeAvg": 15000,
+    "north": 0,
+    "sectorEffect": 0,
+    "ludScore": 2.7,
+    "mbScore": 2.0,
+    "brScore": 2.0,
+    "udrScore": 2.0,
+    "vcScore": 1.1,
+    "nbScore": 0.7,
+    "seScore": 0.7
+  },
+  "2026-09-03": {
+    "score": 22.2,
+    "phase": "恐慌期",
+    "mood": 22.2,
+    "limitUp": 44,
+    "limitDown": 16,
+    "maxBoards": 0,
+    "position": "20%",
+    "bomb": 26,
+    "up": 1844,
+    "down": 3570,
+    "volume": 15000,
+    "volumeAvg": 15000,
+    "north": 0,
+    "sectorEffect": 0,
+    "ludScore": 5.3,
+    "mbScore": 4.0,
+    "brScore": 4.0,
+    "udrScore": 4.0,
+    "vcScore": 2.2,
+    "nbScore": 1.3,
+    "seScore": 1.3
+  },
+  "2026-09-04": {
+    "score": 22.2,
+    "phase": "恐慌期",
+    "mood": 22.2,
+    "limitUp": 39,
+    "limitDown": 9,
+    "maxBoards": 5,
+    "position": "20%",
+    "bomb": 21,
+    "up": 2290,
+    "down": 2795,
+    "volume": 15000,
+    "volumeAvg": 15000,
+    "north": 0,
+    "sectorEffect": 0,
+    "ludScore": 5.3,
+    "mbScore": 4.0,
+    "brScore": 4.0,
+    "udrScore": 4.0,
+    "vcScore": 2.2,
+    "nbScore": 1.3,
+    "seScore": 1.3
+  },
+  "2026-09-07": {
+    "score": 66.7,
+    "phase": "萌芽期",
+    "mood": 66.7,
+    "limitUp": 93,
+    "limitDown": 2,
+    "maxBoards": 6,
+    "position": "60%",
+    "bomb": 57,
+    "up": 3166,
+    "down": 2195,
+    "volume": 15000,
+    "volumeAvg": 15000,
+    "north": 0,
+    "sectorEffect": 0,
+    "ludScore": 16.0,
+    "mbScore": 12.0,
+    "brScore": 12.0,
+    "udrScore": 12.0,
+    "vcScore": 6.7,
+    "nbScore": 4.0,
+    "seScore": 4.0
+  }
+};
+    var merge = function(ed){
+      ed = ed || {};
+      if (Object.keys(ed).length === 0) return; /* 空数据：等待演示数据播种，下次启动再注入 */
+      Object.keys(CALIB).forEach(function(d){
+        var c = CALIB[d];
+        var rec = ed[d] || {};
+        /* 校准表数值 */
+        rec.limitUp=c.limitUp; rec.limitDown=c.limitDown; rec.up=c.up; rec.down=c.down; rec.bomb=c.bomb;
+        rec.maxBoards=c.maxBoards; rec.position=c.position;
+        /* 展示字段（与仓位自洽；成交额为中性占位值） */
+        rec.score=c.score; rec.phase=c.phase; rec.mood=c.mood;
+        rec.ludScore=c.ludScore; rec.mbScore=c.mbScore; rec.brScore=c.brScore; rec.udrScore=c.udrScore;
+        rec.vcScore=c.vcScore; rec.nbScore=c.nbScore; rec.seScore=c.seScore;
+        if (typeof rec.volume==='undefined') rec.volume=c.volume;
+        if (typeof rec.volumeAvg==='undefined') rec.volumeAvg=c.volumeAvg;
+        if (typeof rec.north==='undefined') rec.north=0;
+        if (typeof rec.sectorEffect==='undefined') rec.sectorEffect=0;
+        ed[d]=rec;
+      });
+      try{ if (typeof emotionData!=='undefined'){ Object.keys(ed).forEach(function(k){ emotionData[k]=ed[k]; }); } }catch(e){}
+      try{ if (typeof StorageAPI!=='undefined'&&StorageAPI.saveEmotionData) StorageAPI.saveEmotionData(ed); }catch(e){}
+      try{ localStorage.setItem('emotionData_v2', JSON.stringify(ed)); }catch(e){}
+      try{ if (typeof renderMaxBoardsChart==='function') renderMaxBoardsChart(); }catch(e){}
+      try{ if (typeof refreshAllCharts==='function') refreshAllCharts(); }catch(e){}
+      try{ if (typeof renderRecords==='function') renderRecords(); }catch(e){}
+      try{ localStorage.setItem('_ea_calib_v3','1'); }catch(e){} /* 成功后打标记 */
+    };
+    var done=false;
+    try{ if (typeof StorageAPI!=='undefined'&&StorageAPI.loadEmotionData){ StorageAPI.loadEmotionData(function(err,data){ if(!done){done=true; merge(data);} }); } }catch(e){}
+    setTimeout(function(){ if(!done){ done=true; try{ merge(JSON.parse(localStorage.getItem('emotionData_v2')||'{}')); }catch(e){ merge({}); } } },1500);
+  }catch(e){}
 })();
 </script>
 </body>
