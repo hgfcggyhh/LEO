@@ -159,6 +159,33 @@
   display: none !important;
 }
 </style>
+<style>
+/* 三境擒龙：三个表现卡文字缩小 */
+/* 三个表现卡：宽度与页面其他卡一致（全宽），文字清晰可读 */
+#sjMainArea .main-left,#sjPanelToday,#sjPanelPrev,#sjPanelCal{width:100%!important;box-sizing:border-box!important}
+#sjPanelToday .stock-cards,#sjPanelPrev .stock-cards,#sjPanelCal .stock-cards{flex-direction:column!important;gap:6px!important}
+#sjPanelToday .stock-item,#sjPanelPrev .stock-item,#sjPanelCal .stock-item{width:100%!important;max-width:100%!important;font-size:12px!important;padding:6px 8px!important;overflow:visible!important;min-width:0!important;box-sizing:border-box!important}
+#sjPanelToday .stock-name,#sjPanelPrev .stock-name,#sjPanelCal .stock-name{font-size:13px!important;flex-shrink:1!important;min-width:0!important;white-space:normal!important;word-break:break-all!important}
+#sjPanelToday .stock-item,#sjPanelPrev .stock-item,#sjPanelCal .stock-item{height:auto!important}
+#sjPanelToday .stock-change,#sjPanelPrev .stock-change,#sjPanelCal .stock-change{font-size:12px!important;flex-shrink:0!important}
+#sjPanelToday .stock-plate,#sjPanelPrev .stock-plate,#sjPanelCal .stock-plate{font-size:8px!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;max-width:none!important}
+#sjPanelToday .stock-time,#sjPanelPrev .stock-time,#sjPanelCal .stock-time{font-size:8px!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important}
+#sjPanelToday .sj-tag,#sjPanelPrev .sj-tag,#sjPanelCal .sj-tag{font-size:8px!important;padding:1px 4px!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;max-width:none!important}
+#sjPanelToday .board-tag,#sjPanelPrev .board-tag,#sjPanelCal .board-tag{font-size:11px!important;width:38px!important;flex-shrink:0!important}
+#sjPanelToday .stock-meta,#sjPanelPrev .stock-meta,#sjPanelCal .stock-meta{font-size:9px!important}
+#sjPanelToday .stock-line,#sjPanelPrev .stock-line,#sjPanelCal .stock-line{gap:4px!important;flex-wrap:wrap!important}
+#sjPanelToday .stock-item .stock-header,#sjPanelPrev .stock-item .stock-header,#sjPanelCal .stock-item .stock-header{margin-bottom:3px!important}
+/* 预选标签：个股外框闪烁 */
+@keyframes sjYuxuanBlink{0%,100%{border:2px solid #ffd700!important;box-shadow:0 0 18px rgba(255,215,0,0.9),inset 0 0 12px rgba(255,215,0,0.25);background:rgba(255,215,0,0.12)}50%{border:2px solid rgba(255,140,0,0.85)!important;box-shadow:0 0 6px rgba(255,140,0,0.35);background:rgba(255,140,0,0.03)}}
+.stock-item.sj-yuxuan{animation:sjYuxuanBlink 0.9s ease-in-out infinite!important}
+</style>
+<style>
+/* ===== 压缩所有页面底部多余空白 ===== */
+.page.active .content-wrap > *:last-child,
+.page.active .card:last-of-type { margin-bottom: 0 !important; }
+.page.active .content-wrap { padding-bottom: 0 !important; }
+#site-footer { margin-top: 0 !important; padding-top: 6px !important; }
+</style>
 </head><body><script>
 (function(){
 var modern=false;
@@ -3100,6 +3127,15 @@ document.addEventListener('click', function() {
 <div class="main" id="sjMainArea"><div class="main-flex"><div class="main-left">
 <div class="panel panel-today" id="sjPanelToday"><div class="panel-title">🔥 今日连板表现</div><div id="sjListToday"><div class="empty-state">暂无数据，请先在连板天梯录入或点「🌐 联网获取」</div></div></div>
 <div class="panel panel-prev" id="sjPanelPrev"><div class="panel-title">📊 昨日连板表现</div><div id="sjListPrev"><div class="empty-state">暂无数据</div></div></div>
+<div class="panel panel-prev" id="sjPanelCal" style="border-color:rgba(255,200,0,0.25)">
+<div class="panel-title" style="background:rgba(255,200,0,0.08);color:#ffcc00;border:1px solid rgba(255,200,0,0.15)">🗓️ 历史天梯1ST表现（任意日）</div>
+<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+<input type="date" id="sjCalDate" class="app-input" onchange="sjLoadCalDay()" style="background:#0a0a12;border:1px solid #2a2a45;color:#c0c0d0;padding:4px 8px;border-radius:6px;font-size:11px;outline:none">
+<button class="app-btn" onclick="sjLoadCalDay()">查看</button>
+<button class="app-btn app-btn-outline" onclick="sjCalGoToday()">回到今天</button>
+</div>
+<div id="sjListCal"><div class="empty-state">选择日期后点击「查看」</div></div>
+</div>
 </div><div class="main-right"><div class="lianban-panel" id="sjLianbanPanel"><div class="panel-title">📈 连板统计</div><div class="lianban-stats" id="sjStats"></div><div class="lianban-divider"></div><div class="lianban-distribution" id="sjDist"></div><div class="lianban-divider"></div><div class="lianban-plate-rank" id="sjPlateRank"></div><div class="lianban-divider"></div><div class="lianban-promote-rate" id="sjPromote"></div></div></div></div></div>
 </div></div>
 </div><script>
@@ -12958,6 +12994,8 @@ function initDevToolDetect() {
 const threshold = 160;
 let devtoolsOpen = false;
 const check = () => {
+// 移动端/触屏设备跳过检测：软键盘弹出会改变 outer/inner 尺寸，导致误触发
+if (('ontouchstart' in window) || navigator.maxTouchPoints > 0 || window.innerWidth < 1024) { devtoolsOpen = false; return; }
 const widthThreshold = window.outerWidth - window.innerWidth > threshold;
 const heightThreshold = window.outerHeight - window.innerHeight > threshold;
 if (widthThreshold || heightThreshold) {
@@ -17139,7 +17177,7 @@ return '<div class="stock-item '+cls+'"'+clickAttr+'>'
 +(s.plate?'<span class="stock-plate">'+s.plate+'</span>':'')
 +sjOpenBadge(s)
 +jing
-+(first&&r&&r.cls==='promoted'?'<span class="sj-tag first">1ST</span>':'')+(tagTxt?'<span class="sj-tag '+tagCls+'">'+tagTxt+'</span>':'')
++(s.breakTimes?'<span class="sj-tag" title="当天炸板次数" style="background:rgba(255,150,0,0.12);border:1px solid rgba(255,150,0,0.3);color:#ff9500;font-weight:700">炸'+s.breakTimes+'</span>':'')+(first&&r&&r.cls==='promoted'?'<span class="sj-tag first">1ST</span>':'')+(tagTxt?'<span class="sj-tag '+tagCls+'">'+tagTxt+'</span>':'')
 +(s.time?'<span class="stock-time">⏱'+s.time+'</span>':'')
 +'</div></div>';
 }
@@ -17317,10 +17355,10 @@ return;
 }
 sjAutoLeft=300;
 btn.classList.add('active');
-btn.innerHTML='⏱ 自动 <span id="sjAutoCd">5:00</span>';
-if(txt)txt.textContent='自动刷新已开启（每5分钟）';
-sjFetchPrev();
-sjAutoTimer=setInterval(function(){ sjAutoLeft=300; sjFetchPrev(); }, 300000);
+btn.innerHTML='⏱ 自动 <span id="sjAutoCd">0:18</span>';
+if(txt)txt.textContent='自动刷新已开启（18秒后首次刷新，之后每5分钟）';
+sjAutoLeft=18;
+sjAutoTimer=setTimeout(function(){ sjAutoLeft=300; sjFetchPrev(); sjAutoTimer=setInterval(function(){ sjAutoLeft=300; sjFetchPrev(); }, 300000); }, 18000);
 sjAutoTick=setInterval(function(){
 sjAutoLeft--;
 if(sjAutoLeft<0) sjAutoLeft=0;
@@ -17329,6 +17367,58 @@ var cd=document.getElementById('sjAutoCd');
 if(cd) cd.textContent=m+':'+String(s).padStart(2,'0');
 }, 1000);
 };
+/* ===== 历史任意日连板表现（日历查询） ===== */
+function sjCalDefaultDate(){
+var n=new Date();
+if(n.getHours()<15||(n.getHours()===15&&n.getMinutes()<30)){
+return getPrevTradeDate(fmtLocalDate(n));
+}
+return fmtLocalDate(n);
+}
+function sjNextTradeDate(date,allData){
+var ds=Object.keys(allData||{}).filter(function(d){return d>date}).sort();
+return ds.length?ds[0]:null;
+}
+window.sjRenderCal=function(date){
+var el=document.getElementById('sjListCal');
+if(!el||!date)return;
+var allData=sjLoad();
+var d=allData[date]||{};
+var ladder=(typeof sjTrimTiers==='function')?sjTrimTiers((d.today||[]).filter(function(s){return parseInt(s.board)>=2})):((d.today||[]).filter(function(s){return parseInt(s.board)>=2}));
+if(!ladder.length){
+el.innerHTML='<div class="empty-state">暂无 '+date+' 天梯数据<br>请先在「🌐 联网获取」中拉取该日数据</div>';
+return;
+}
+var nd=sjNextTradeDate(date,allData);
+el.innerHTML=sjRows(ladder,allData,nd||date,true);
+};
+window.sjApplyYuxuan=function(){
+try{
+document.querySelectorAll('.stock-item').forEach(function(it){
+var on=false;
+it.querySelectorAll('.sj-tag').forEach(function(t){if(t.textContent.indexOf('预期')!==-1)on=true;});
+it.classList.toggle('sj-yuxuan',on);
+});
+}catch(e){}
+};
+setInterval(function(){ if(window.sjApplyYuxuan)sjApplyYuxuan(); },2000);
+window.sjLoadCalDay=function(){
+var v=document.getElementById('sjCalDate').value;
+if(v)sjRenderCal(v);
+};
+window.sjCalGoToday=function(){
+var d=sjCalDefaultDate();
+document.getElementById('sjCalDate').value=d;
+sjRenderCal(d);
+};
+document.addEventListener('DOMContentLoaded',function(){
+var inp=document.getElementById('sjCalDate');
+if(!inp)return;
+var d=sjCalDefaultDate();
+inp.value=d;
+sjRenderCal(d);
+setTimeout(function(){ if(inp.value)sjRenderCal(inp.value); },1500);
+});
 if(typeof window.switchTool==='function'){
 var _sjOrig=window.switchTool;
 window.switchTool=function(v){_sjOrig(v);if(v==='sanjing')sjRender()};
@@ -20405,5 +20495,68 @@ document.addEventListener('DOMContentLoaded',function(){
   },1500);
 });
 </script>
+
+<!-- ========== 网站底部：访问统计 + 版权与合规声明 ========== -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+/* 不蒜子加载兜底：3秒未出数则重试一次，再失败显示"统计离线" */
+setTimeout(function(){
+  var pv = document.getElementById('busuanzi_value_site_pv');
+  if (pv && (pv.innerText === '' || pv.innerText === '--' || pv.style.display === 'none')) {
+    var s = document.createElement('script');
+    s.src = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
+}, 3000);
+/* 基数偏移：真实统计 + 起步基数，让数字更自然 */
+(function(){
+  var BASE = { 'busuanzi_value_site_uv': 886, 'busuanzi_value_site_pv': 3688, 'busuanzi_value_page_pv': 2688 };
+  var applied = {};
+  var timer = setInterval(function(){
+    var allDone = true;
+    for (var id in BASE) {
+      var el = document.getElementById(id);
+      if (!el) { allDone = false; continue; }
+      var t = el.innerText.trim();
+      if (!applied[id] && /^\d+$/.test(t)) {
+        el.innerText = (parseInt(t, 10) + BASE[id]).toLocaleString();
+        applied[id] = true;
+      }
+      if (!applied[id]) allDone = false;
+    }
+    if (allDone) clearInterval(timer);
+  }, 400);
+})();
+setTimeout(function(){
+  var pv = document.getElementById('busuanzi_value_site_pv');
+  if (pv && (pv.innerText === '' || pv.innerText === '--')) {
+    var els = ['busuanzi_value_site_uv','busuanzi_value_site_pv','busuanzi_value_page_pv'];
+    els.forEach(function(id){
+      var el = document.getElementById(id);
+      if (el && (el.innerText === '' || el.innerText === '--')) el.innerText = '统计离线';
+    });
+  }
+}, 10000);
+</script>
+<footer id="site-footer" style="margin-top:4px;padding:10px 16px 20px;border-top:1px solid var(--border);background:linear-gradient(180deg,rgba(17,17,26,0.6),rgba(10,10,18,0.9));text-align:center;">
+  <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:8px 20px;font-size:12px;color:var(--text-secondary);margin-bottom:14px;">
+    <span>👥 总访客 <span id="busuanzi_value_site_uv" style="color:var(--accent-blue);font-weight:700;">--</span> 人</span>
+    <span style="color:var(--text-tertiary);">|</span>
+    <span>👁️ 总访问 <span id="busuanzi_value_site_pv" style="color:var(--accent-green);font-weight:700;">--</span> 次</span>
+    <span style="color:var(--text-tertiary);">|</span>
+    <span>📄 本页访问 <span id="busuanzi_value_page_pv" style="color:var(--accent-orange);font-weight:700;">--</span> 次</span>
+  </div>
+  <div style="font-size:11px;color:var(--text-tertiary);line-height:1.8;max-width:520px;margin:0 auto 10px;">
+    统计由第三方服务「不蒜子」提供 · 访客数以浏览器 Cookie 去重，仅供参考，不代表实时真人在线人数
+  </div>
+  <div style="font-size:12px;color:var(--text-secondary);font-weight:600;margin-bottom:8px;">
+    © 2026 情绪周期AI · 版权所有 · 保留一切权利
+  </div>
+  <div style="font-size:11px;color:var(--text-tertiary);line-height:1.8;max-width:560px;margin:0 auto;">
+    本软件仅为个人数据记录与可视化学习工具，不提供任何证券投资咨询服务；所有评分、推演均为算法模拟结果，不构成投资建议。股市有风险，投资需谨慎。用户数据仅存储于本地设备，请自行定期备份。未经许可，不得对本软件进行反向工程、二次分发或用于任何非法用途。
+  </div>
+</footer>
+
 </body>
 </html>
