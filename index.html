@@ -12934,6 +12934,8 @@ mask.id = 'captureMask';
 mask.innerHTML = '<div class="icon">🛡️</div><div>安全保护已激活</div><div class="sub">检测到页面切换/可能的截屏行为<br>内容已自动隐藏</div>';
 document.body.appendChild(mask);
 document.addEventListener('visibilitychange', function() {
+// 移动端跳过：切换App/输入法会触发visibilitychange，造成误模糊
+if (('ontouchstart' in window) || navigator.maxTouchPoints > 0) return;
 if (document.hidden) {
 blurCount++;
 document.body.style.filter = 'blur(30px) brightness(0.1)';
@@ -12949,6 +12951,8 @@ blurCount = 0;
 }
 });
 window.addEventListener('blur', function() {
+// 移动端跳过：输入框焦点切换/软键盘弹出会触发窗口blur，导致误模糊
+if (('ontouchstart' in window) || navigator.maxTouchPoints > 0) return;
 document.body.style.filter = 'blur(20px)';
 });
 window.addEventListener('focus', function() {
